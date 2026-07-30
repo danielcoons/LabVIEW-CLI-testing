@@ -1,0 +1,37 @@
+{
+    "repo":  "danielcoons/LabVIEW-CLI-testing",
+    "sha":  "9efe7b222f99d668214eebcc40a5672032a1a8ca",
+    "ref":  "refs/heads/main",
+    "platform":  "windows",
+    "arch":  "AMD64",
+    "labview_version":  "LabVIEW 2026",
+    "built_at":  "2026-07-30T22:17:49Z",
+    "specs":  [
+                  {
+                      "project":  "src\\QMH Demo.lvproj",
+                      "name":  "Main Application",
+                      "type":  "EXE",
+                      "target":  "My Computer",
+                      "status":  "built",
+                      "outputs":  [
+                                      {
+                                          "file":  "Main.aliases",
+                                          "size":  38,
+                                          "sha256":  "3277c56b265a62fd2112dcccc5cf0d6065eb44ca7d050ffa950b49963bee9227"
+                                      },
+                                      {
+                                          "file":  "Main.exe",
+                                          "size":  588288,
+                                          "sha256":  "f3e6f38b2fa4cf259440a9010b406abfd6b51b5cb330e4412c8d3f8a337c24d5"
+                                      },
+                                      {
+                                          "file":  "Main.ini",
+                                          "size":  289,
+                                          "sha256":  "916e6fb72b62bba093a26bd5748717a1299e2938b4bea6279d66f3b84cf2df3f"
+                                      }
+                                  ],
+                      "message":  "",
+                      "duration":  33.5
+                  }
+              ]
+}
