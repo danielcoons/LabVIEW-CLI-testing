@@ -1,11 +1,11 @@
 # .github/labview-ci.yml - LabVIEW CI configuration
 # Updated by the Reconfigure workflow.
 schemaVersion: 1
-installedVersion: 4.12.4
+installedVersion: 4.13.0
 configuredAt: 2026-07-30T19:55:34Z
 source:
   repo: elijah286/LabVIEW-CI-with-Containers
-  ref: v4.12.4
+  ref: v4.13.0
 config:
   labviewVersion: "2026"
   os: [windows, linux]
@@ -26,3 +26,4 @@ activities:
   - snapshots-2
   - unit-tests
   - builds
+  - sbom
