@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "4182a5291fb6f4454e457b9a013cbfbb52ab4ef4",
+  "sha": "24fafd3314c9d4c718fed09617ccd8a0e999a3c4",
   "revisions": [
+    {
+      "sha": "24fafd3314c9d4c718fed09617ccd8a0e999a3c4",
+      "short": "24fafd3",
+      "message": "gitignore",
+      "author": "daniel-coons",
+      "date": "2026-07-30T20:38:58Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "4182a5291fb6f4454e457b9a013cbfbb52ab4ef4",
       "short": "4182a52",
