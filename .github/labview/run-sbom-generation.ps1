@@ -95,18 +95,23 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
             if ($lvExe) {
                 $iniPath = Join-Path (Split-Path $lvExe.FullName) "LabVIEW.ini"
                 if (Test-Path $iniPath) {
-                    $iniContent = Get-Content $iniPath -Raw -ErrorAction SilentlyContinue
-                    if ($iniContent -notmatch "server.tcp.enabled=True") {
-                        Write-Host "Enabling VI Server (Port 3363) in $iniPath..."
-                        Add-Content -Path $iniPath -Value "`r`nserver.tcp.enabled=True`r`nserver.tcp.port=3363`r`nserver.tcp.access=`"+127.0.0.1;+localhost`""
-                    }
+                    Write-Host "Configuring VI Server permissions in $iniPath..." -ForegroundColor Cyan
+                    $iniLines = @(
+                        "",
+                        "[LabVIEW]",
+                        "server.tcp.enabled=True",
+                        "server.tcp.port=3363",
+                        "server.tcp.access=`"*`"",
+                        "VIPropeties.AllowPort3363=True"
+                    )
+                    Add-Content -Path $iniPath -Value ($iniLines -join "`r`n") -ErrorAction SilentlyContinue
                 }
 
-                # 3. Launch Headless LabVIEW
-                Write-Host "Launching headless LabVIEW ($($lvExe.FullName))..." -ForegroundColor Cyan
-                $lvProcess = Start-Process -FilePath $lvExe.FullName -ArgumentList "-LabVIEWCLI" -PassThru -NoNewWindow
+                # 3. Launch LabVIEW process explicitly
+                Write-Host "Launching background LabVIEW instance ($($lvExe.FullName))..." -ForegroundColor Cyan
+                $lvProcess = Start-Process -FilePath $lvExe.FullName -ArgumentList "-LabVIEWCLI", "-headless" -PassThru -NoNewWindow
                 
-                # 4. Wait until Port 3363 is active (up to 30s)
+                # 4. Wait up to 30 seconds for Port 3363 to open
                 Write-Host "Waiting for VI Server (Port 3363) to open..."
                 $portOpen = $false
                 for ($i = 0; $i -lt 15; $i++) {
@@ -149,9 +154,9 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
                     }
                 }
             } finally {
-                # 6. Clean up headless LabVIEW
+                # 6. Clean up background LabVIEW process
                 if ($lvProcess -and -not $lvProcess.HasExited) {
-                    Write-Host "Stopping headless LabVIEW instance..." -ForegroundColor Yellow
+                    Write-Host "Stopping background LabVIEW instance..." -ForegroundColor Yellow
                     Stop-Process -Id $lvProcess.Id -Force -ErrorAction SilentlyContinue
                 }
             }
@@ -159,6 +164,7 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
             Write-Warning "No valid .lvproj file found in workspace."
         }
     }
+
 
     # Structure document in SPDX 2.3 standard JSON format
     $sbomDoc = @{
