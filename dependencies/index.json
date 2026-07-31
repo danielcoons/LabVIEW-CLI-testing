@@ -1,8 +1,44 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "1181b087c5083fd8122d718ab4548ea72ca688db",
+  "sha": "a205d724969c92acedfdda097cdf206ed83a53ba",
   "revisions": [
+    {
+      "sha": "a205d724969c92acedfdda097cdf206ed83a53ba",
+      "short": "a205d72",
+      "message": "Merge pull request #5 from danielcoons/labview-ci/reconfigure-30650054522",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T17:10:17Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "e1637da748dd10f04bea5f4cb78f336d930921c3",
+      "short": "e1637da",
+      "message": "ci: reconfigure LabVIEW CI settings",
+      "author": "github-actions[bot]",
+      "date": "2026-07-31T17:09:38Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "fceb09c085af37438f7824b4749d7130200e9262",
+      "short": "fceb09c",
+      "message": "Merge branch 'main' of https://github.com/danielcoons/LabVIEW-CLI-testing",
+      "author": "daniel-coons",
+      "date": "2026-07-31T17:08:42Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "9621f5b9aae2103c92c1a28da107c26a6e804338",
+      "short": "9621f5b",
+      "message": "custom vi analyzer config",
+      "author": "daniel-coons",
+      "date": "2026-07-31T17:08:28Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "1181b087c5083fd8122d718ab4548ea72ca688db",
       "short": "1181b08",
