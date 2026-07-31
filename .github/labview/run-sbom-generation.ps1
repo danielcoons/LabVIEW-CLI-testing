@@ -76,37 +76,46 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
 
     $sbomPackages = @()
 
-    if ($VipmCli -and (Test-Path $VipmCli)) {
-        Write-Host "Querying VIPM installed packages via VIPM CLI..." -ForegroundColor Cyan
-        try {
-            $rawJson = & $VipmCli list --format json 2>$null
-            if ($rawJson) {
-                $sbomPackages = $rawJson | ConvertFrom-Json
-            } else {
-                # Fallback parser for standard text table output
-                $rawText = & $VipmCli list installed 2>$null
-                $sbomPackages = @($rawText | ForEach-Object {
-                    if ($_ -match '^(?<Name>.+?)\s+(?<Version>[\d\.]+)\s+(?<Vendor>.+)$') {
-                        [pscustomobject]@{
-                            Name    = $matches['Name'].Trim()
-                            Version = $matches['Version'].Trim()
-                            Vendor  = $matches['Vendor'].Trim()
-                        }
+if ($VipmCli -and (Test-Path $VipmCli)) {
+        Write-Host "Generating native VIPM SBOM via VIPM CLI..." -ForegroundColor Cyan
+        
+        # Locate project file (.lvproj) in workspace
+        $projFile = Get-ChildItem -Path $Workspace -Filter '*.lvproj' -Recurse | Select-Object -First 1
+        
+        if ($projFile) {
+            $projPath = $projFile.FullName
+            $outPath  = Join-Path $OutDir "sbom.json"
+            
+            Write-Host "  Project : $projPath"
+            Write-Host "  Output  : $outPath"
+
+            try {
+                # Executes: vipm sbom "<projPath>" --format "cyclonedx" --schema-version "1.5" --output "<outPath>"
+                & $VipmCli sbom "$projPath" --format "cyclonedx" --schema-version "1.5" --output "$outPath"
+
+                if (Test-Path $outPath) {
+                    Write-Host "VIPM SBOM generated successfully!" -ForegroundColor Green
+                    # Read the generated SBOM to extract packages for the dashboard widget
+                    $sbomRaw = Get-Content $outPath | ConvertFrom-Json
+                    
+                    # Convert CycloneDX components to standardized package objects
+                    if ($sbomRaw.components) {
+                        $sbomPackages = @($sbomRaw.components | ForEach-Object {
+                            [pscustomobject]@{
+                                Name    = $_.name
+                                Version = $_.version
+                                Vendor  = if ($_.publisher) { $_.publisher } else { "VIPM Package" }
+                            }
+                        })
                     }
-                })
+                } else {
+                    Write-Warning "VIPM CLI completed but output file was not created at $outPath"
+                }
+            } catch {
+                Write-Warning "Failed to execute VIPM CLI sbom command: $($_.Exception.Message)"
             }
-        } catch {
-            Write-Warning "Failed to query VIPM CLI directly: $($_.Exception.Message)"
-        }
-    } else {
-        Write-Warning "VIPM CLI not found on runner. Scanning workspace for .vipc configuration files..."
-        $vipcFiles = Get-ChildItem -Path $Workspace -Filter '*.vipc' -Recurse -ErrorAction SilentlyContinue
-        foreach ($vipc in $vipcFiles) {
-            $sbomPackages += [pscustomobject]@{
-                Name    = $vipc.Name
-                Version = "Configured VIPC File"
-                Vendor  = "Local Repository"
-            }
+        } else {
+            Write-Warning "No .lvproj file found in workspace root $Workspace to pass to VIPM CLI."
         }
     }
 
