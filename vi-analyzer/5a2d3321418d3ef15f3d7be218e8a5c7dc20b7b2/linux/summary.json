@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "sha": "5a2d3321418d3ef15f3d7be218e8a5c7dc20b7b2",
+    "short": "5a2d332",
+    "platform": "linux",
+    "repo": "danielcoons/LabVIEW-CLI-testing",
+    "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+    "pages_base": "../../..",
+    "commit": {
+      "message": "including the dragon file which i forgot",
+      "author": "daniel-coons",
+      "date": "2026-07-31T13:02:58-04:00"
+    },
+    "generated_utc": "2026-07-31 17:05 UTC",
+    "analysis_date": "Friday, July 31, 2026 05:05:59 PM",
+    "duration": "00:00:59.87"
+  },
+  "summary": {
+    "vis_analyzed": 37,
+    "tests_run": 3847,
+    "passed": 3692,
+    "failed": 155,
+    "skipped": 0,
+    "findings": 38,
+    "vis_with_findings": 15
+  },
+  "errors": {
+    "vi_not_loadable": 0,
+    "test_not_loadable": 0,
+    "test_not_runnable": 0,
+    "test_error_out": 1
+  },
+  "rule_counts": [
+    {
+      "test": "Enabled Debugging",
+      "severity": "performance",
+      "count": 15,
+      "vi_count": 15
+    },
+    {
+      "test": "Approved Bookmark Tags",
+      "severity": "style",
+      "count": 5,
+      "vi_count": 1
+    },
+    {
+      "test": "Wires Under Objects",
+      "severity": "style",
+      "count": 5,
+      "vi_count": 1
+    },
+    {
+      "test": "Spell Check",
+      "severity": "documentation",
+      "count": 3,
+      "vi_count": 3
+    },
+    {
+      "test": "Wire Bends",
+      "severity": "style",
+      "count": 3,
+      "vi_count": 3
+    },
+    {
+      "test": "VI Documentation",
+      "severity": "documentation",
+      "count": 2,
+      "vi_count": 2
+    },
+    {
+      "test": "Broken VI",
+      "severity": "correctness",
+      "count": 1,
+      "vi_count": 1
+    },
+    {
+      "test": "Comment Usage",
+      "severity": "documentation",
+      "count": 1,
+      "vi_count": 1
+    },
+    {
+      "test": "Diagram Size",
+      "severity": "style",
+      "count": 1,
+      "vi_count": 1
+    },
+    {
+      "test": "Error Cluster Wired",
+      "severity": "correctness",
+      "count": 1,
+      "vi_count": 1
+    },
+    {
+      "test": "Reentrant VI Issues",
+      "severity": "correctness",
+      "count": 1,
+      "vi_count": 1
+    }
+  ]
+}
