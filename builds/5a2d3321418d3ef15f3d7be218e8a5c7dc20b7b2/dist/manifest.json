@@ -5,7 +5,7 @@
     "platform":  "windows",
     "arch":  "AMD64",
     "labview_version":  "LabVIEW 2026",
-    "built_at":  "2026-07-31T17:17:39Z",
+    "built_at":  "2026-07-31T17:42:56Z",
     "specs":  [
                   {
                       "project":  "src\\QMH Demo.lvproj",
@@ -17,7 +17,7 @@
 
                                   ],
                       "message":  "ExecuteBuildSpec exited 2",
-                      "duration":  35
+                      "duration":  37.8
                   }
               ]
 }
