@@ -1,0 +1,36 @@
+{
+ "meta": {
+  "sha": "a205d724969c92acedfdda097cdf206ed83a53ba",
+  "short": "a205d72",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "Merge pull request #5 from danielcoons/labview-ci/reconfigure-30650054522",
+   "author": "Daniel Coons",
+   "date": "2026-07-31T13:10:17-04:00"
+  },
+  "generated_utc": "2026-07-31 17:42 UTC",
+  "spdx_version": "SPDX-2.3",
+  "created": "2026-07-31T17:41:52Z"
+ },
+ "summary": {
+  "total_packages": 0
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [],
+ "tooling": {
+  "missing": []
+ }
+}
