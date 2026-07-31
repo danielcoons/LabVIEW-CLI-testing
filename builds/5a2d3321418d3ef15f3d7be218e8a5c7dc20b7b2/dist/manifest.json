@@ -1,0 +1,23 @@
+{
+    "repo":  "danielcoons/LabVIEW-CLI-testing",
+    "sha":  "5a2d3321418d3ef15f3d7be218e8a5c7dc20b7b2",
+    "ref":  "refs/heads/main",
+    "platform":  "windows",
+    "arch":  "AMD64",
+    "labview_version":  "LabVIEW 2026",
+    "built_at":  "2026-07-31T17:17:39Z",
+    "specs":  [
+                  {
+                      "project":  "src\\QMH Demo.lvproj",
+                      "name":  "Main Application",
+                      "type":  "EXE",
+                      "target":  "My Computer",
+                      "status":  "failed",
+                      "outputs":  [
+
+                                  ],
+                      "message":  "ExecuteBuildSpec exited 2",
+                      "duration":  35
+                  }
+              ]
+}
