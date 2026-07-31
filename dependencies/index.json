@@ -1,8 +1,26 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "c5cee0ea4ad574b62b1af209f24df0ca6757af89",
+  "sha": "fba6ea5d47a5868878a3cf2d6af809518a43ed08",
   "revisions": [
+    {
+      "sha": "fba6ea5d47a5868878a3cf2d6af809518a43ed08",
+      "short": "fba6ea5",
+      "message": "Fix indentation and remove duplicate continue-on-error",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T11:02:39Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "a1b7dc517989aa13fccadef3cc3e3b5b342e3f49",
+      "short": "a1b7dc5",
+      "message": "Update SBOM generation script for Windows container",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T11:00:23Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "c5cee0ea4ad574b62b1af209f24df0ca6757af89",
       "short": "c5cee0e",
