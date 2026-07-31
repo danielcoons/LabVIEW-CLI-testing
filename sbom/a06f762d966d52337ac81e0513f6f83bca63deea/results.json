@@ -1,0 +1,36 @@
+{
+ "meta": {
+  "sha": "a06f762d966d52337ac81e0513f6f83bca63deea",
+  "short": "a06f762",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "adding lunit unit test for easy verification",
+   "author": "daniel-coons",
+   "date": "2026-07-31T12:55:27-04:00"
+  },
+  "generated_utc": "2026-07-31 17:11 UTC",
+  "spdx_version": "SPDX-2.3",
+  "created": "2026-07-31T17:11:41Z"
+ },
+ "summary": {
+  "total_packages": 0
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [],
+ "tooling": {
+  "missing": []
+ }
+}
