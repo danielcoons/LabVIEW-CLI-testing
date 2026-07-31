@@ -76,11 +76,13 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
 
     $sbomPackages = @()
 
-if ($VipmCli -and (Test-Path $VipmCli)) {
+    if ($VipmCli -and (Test-Path $VipmCli)) {
         Write-Host "Generating native VIPM SBOM via VIPM CLI..." -ForegroundColor Cyan
         
-        # Locate project file (.lvproj) in workspace
-        $projFile = Get-ChildItem -Path $Workspace -Filter '*.lvproj' -Recurse | Select-Object -First 1
+        # 1. Locate main project file (.lvproj), explicitly ignoring tooling/CI folders
+        $projFile = Get-ChildItem -Path $Workspace -Filter '*.lvproj' -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.FullName -notmatch '[\\/](\.github|ci-out|build)[\\/]' } |
+            Select-Object -First 1
         
         if ($projFile) {
             $projPath = $projFile.FullName
@@ -89,16 +91,28 @@ if ($VipmCli -and (Test-Path $VipmCli)) {
             Write-Host "  Project : $projPath"
             Write-Host "  Output  : $outPath"
 
+            # 2. Ensure VI Server (Port 3363) is enabled in LabVIEW.ini if present
+            $lvIniPaths = Get-ChildItem "C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.ini" -ErrorAction SilentlyContinue
+            foreach ($ini in $lvIniPaths) {
+                try {
+                    $content = Get-Content $ini.FullName -Raw -ErrorAction SilentlyContinue
+                    if ($content -and $content -notmatch "server.tcp.enabled=True") {
+                        Write-Host "Enabling VI Server Port 3363 in $($ini.FullName)..."
+                        Add-Content -Path $ini.FullName -Value "`r`nserver.tcp.enabled=True`r`nserver.tcp.port=3363`r`nserver.tcp.access=`"+127.0.0.1;+localhost`""
+                    }
+                } catch {
+                    Write-Warning "Could not update $($ini.FullName): $($_.Exception.Message)"
+                }
+            }
+
             try {
-                # Executes: vipm sbom "<projPath>" --format "cyclonedx" --schema-version "1.5" --output "<outPath>"
+                # 3. Execute VIPM SBOM command
                 & $VipmCli sbom "$projPath" --format "cyclonedx" --schema-version "1.5" --output "$outPath"
 
                 if (Test-Path $outPath) {
                     Write-Host "VIPM SBOM generated successfully!" -ForegroundColor Green
-                    # Read the generated SBOM to extract packages for the dashboard widget
                     $sbomRaw = Get-Content $outPath | ConvertFrom-Json
                     
-                    # Convert CycloneDX components to standardized package objects
                     if ($sbomRaw.components) {
                         $sbomPackages = @($sbomRaw.components | ForEach-Object {
                             [pscustomobject]@{
@@ -115,7 +129,7 @@ if ($VipmCli -and (Test-Path $VipmCli)) {
                 Write-Warning "Failed to execute VIPM CLI sbom command: $($_.Exception.Message)"
             }
         } else {
-            Write-Warning "No .lvproj file found in workspace root $Workspace to pass to VIPM CLI."
+            Write-Warning "No valid user .lvproj file found in workspace root $Workspace (excluding .github)."
         }
     }
 
