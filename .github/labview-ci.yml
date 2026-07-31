@@ -2,7 +2,7 @@
 # Updated by the Reconfigure workflow.
 schemaVersion: 1
 installedVersion: 4.13.0
-configuredAt: 2026-07-30T19:55:34Z
+configuredAt: 2026-07-31T17:04:43Z
 source:
   repo: danielcoons/LabVIEW-CLI-testing
   ref: v4.13.0
@@ -27,3 +27,23 @@ activities:
   - unit-tests
   - builds
   - sbom
+
+unitTests:
+  thresholds:
+    passedPercent:
+      greenAtLeast: 100
+      yellowAtLeast: 80
+      redBelow: 80
+  tools:
+    caraya:
+      enabled: false
+      locations: []
+    lunit:
+      enabled: true
+      locations: []
+    vi-tester:
+      enabled: false
+      locations: []
+    utf:
+      enabled: false
+      locations: []
