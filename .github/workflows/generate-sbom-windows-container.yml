@@ -185,9 +185,8 @@ jobs:
             powershell -NonInteractive -ExecutionPolicy Bypass -Command "`
               `$lv = Get-ChildItem 'C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.exe' | Select -First 1; `
               if (`$lv) { Start-Process `$lv.FullName -ArgumentList '-LabVIEWCLI'; Start-Sleep -s 10 }; `
-              & 'C:\workspace\.github\labview\run-sbom-generation.ps1' -WorkspaceRoot 'C:\workspace' -ResultsDir 'C:\workspace\ci-out\sbom\results'"
-
-         continue-on-error: true
+              & 'C:\workspace\.github\labview\run-sbom-generation.ps1' -WorkspaceRoot 'C:\workspace' -ResultsDir 'C:\workspace\ci-out\sbom\results' 
+              continue-on-error: true
 
       - name: Build friendly SBOM report
         id: report
