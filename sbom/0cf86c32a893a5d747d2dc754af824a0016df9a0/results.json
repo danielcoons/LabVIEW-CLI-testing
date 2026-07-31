@@ -1,0 +1,36 @@
+{
+ "meta": {
+  "sha": "0cf86c32a893a5d747d2dc754af824a0016df9a0",
+  "short": "0cf86c3",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "still trying to get headless labview going first",
+   "author": "daniel-coons",
+   "date": "2026-07-31T08:51:57-04:00"
+  },
+  "generated_utc": "2026-07-31 13:08 UTC",
+  "spdx_version": "SPDX-2.3",
+  "created": "2026-07-31T13:08:16Z"
+ },
+ "summary": {
+  "total_packages": 0
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [],
+ "tooling": {
+  "missing": []
+ }
+}
