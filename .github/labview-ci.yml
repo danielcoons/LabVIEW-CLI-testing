@@ -2,7 +2,7 @@
 # Updated by the Reconfigure workflow.
 schemaVersion: 1
 installedVersion: 4.13.0
-configuredAt: 2026-07-31T17:04:43Z
+configuredAt: 2026-07-31T17:09:37Z
 source:
   repo: danielcoons/LabVIEW-CLI-testing
   ref: v4.13.0
@@ -16,6 +16,8 @@ config:
     vipc:
       - path: ".github/labview/vipm/ci-tooling.vipc"
         monitor: true
+  viAnalyzer:
+    default: assets/via/via-config-tsc.viancfg
 activities:
   - dashboard
   - masscompile
