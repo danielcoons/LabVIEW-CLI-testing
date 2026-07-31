@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "a06f762d966d52337ac81e0513f6f83bca63deea",
+  "sha": "5a2d3321418d3ef15f3d7be218e8a5c7dc20b7b2",
   "revisions": [
+    {
+      "sha": "5a2d3321418d3ef15f3d7be218e8a5c7dc20b7b2",
+      "short": "5a2d332",
+      "message": "including the dragon file which i forgot",
+      "author": "daniel-coons",
+      "date": "2026-07-31T17:02:58Z",
+      "project": true,
+      "dep_only": false
+    },
     {
       "sha": "a06f762d966d52337ac81e0513f6f83bca63deea",
       "short": "a06f762",
@@ -357,12 +366,18 @@
     }
   ],
   "dragon": {
-    "available": false,
+    "available": true,
     "column": "windows",
-    "ready": false,
+    "ready": true,
     "health": "",
-    "manifest_version": "",
-    "files": [],
+    "manifest_version": "win-3c2bd0afb358",
+    "files": [
+      {
+        "source_file": "src/QMH Demo.dragon",
+        "dependencies": [],
+        "monitored": true
+      }
+    ],
     "install_set": [],
     "conflicts": []
   },
