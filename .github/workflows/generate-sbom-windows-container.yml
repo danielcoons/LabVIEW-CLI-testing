@@ -172,7 +172,7 @@ jobs:
           "version=$wv" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           Write-Host "Worker version: $wv"
           exit 0
-
+     
       - name: Run SBOM generator inside container
         if: steps.pull.outcome == 'success'
         shell: powershell
@@ -182,11 +182,12 @@ jobs:
             -e "GITHUB_REPOSITORY=${{ github.repository }}" `
             -v "${{ github.workspace }}:C:\workspace" `
             $Env:LABVIEW_CONTAINER_IMAGE `
-            powershell -NonInteractive -ExecutionPolicy Bypass `
-              -File "C:\workspace\.github\labview\run-sbom-generation.ps1" `
-              -WorkspaceRoot "C:\workspace" `
-              -ResultsDir    "C:\workspace\ci-out\sbom\results"
-        continue-on-error: true
+            powershell -NonInteractive -ExecutionPolicy Bypass -Command "`
+              `$lv = Get-ChildItem 'C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.exe' | Select -First 1; `
+              if (`$lv) { Start-Process `$lv.FullName -ArgumentList '-LabVIEWCLI'; Start-Sleep -s 10 }; `
+              & 'C:\workspace\.github\labview\run-sbom-generation.ps1' -WorkspaceRoot 'C:\workspace' -ResultsDir 'C:\workspace\ci-out\sbom\results'"
+
+         continue-on-error: true
 
       - name: Build friendly SBOM report
         id: report
