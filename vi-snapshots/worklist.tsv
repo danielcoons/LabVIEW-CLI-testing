@@ -1,1 +1,4 @@
-d49f4ca2bdf55aa8227fdbb24af6bab2ea5d0f57	src/Main.vi
+970c169a78af5436e8c9bcce270520a9cb64cfa3	Test/Test Adder Functionality/testNegativeNumbers.vi
+d5836223ed81d50bbb8488d916f59c3016debbd5	Test/Test Adder Functionality/testNormalNumbers.vi
+0955c20cde1503963221983877bf331ec2d5e8ef	src/Main.vi
+3bac0cad0149f30f7cdf58e24898837c37c19628	src/support/Adder.vi
