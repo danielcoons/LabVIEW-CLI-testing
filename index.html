@@ -281,7 +281,7 @@
   <script>
   (function(){
     var RT = {"masscompile": {"label": "Mass Compile", "platforms": {"windows": {"wf": "masscompile-windows-container.yml", "inputs": {"commit_sha": "{sha}"}}, "linux": {"wf": "masscompile-linux-container.yml", "inputs": {"commit_sha": "{sha}"}}}}, "vi-analyzer": {"label": "VI Analyzer", "platforms": {"windows": {"wf": "run-vi-analyzer-windows-container.yml", "inputs": {"commit_sha": "{sha}"}}, "linux": {"wf": "run-vi-analyzer-linux-container.yml", "inputs": {"commit_sha": "{sha}"}}}}, "vidiff": {"label": "VIDiff", "platforms": {"windows": {"wf": "vidiff-windows-container.yml", "inputs": {"head_sha": "{sha}", "base_sha": "{parent}"}}, "linux": {"wf": "vidiff-linux-container.yml", "inputs": {"head_sha": "{sha}", "base_sha": "{parent}"}}}}, "snapshots": {"label": "VI Snapshots", "platforms": {"all": {"wf": "vi-snapshots.yml", "inputs": {"mode": "backfill"}}}}, "snapshots2": {"label": "VI Browser 2.0 Snapshots", "platforms": {"windows": {"wf": "vi-snapshots-json-windows.yml", "inputs": {"target_sha": "{sha}"}}, "linux": {"wf": "vi-snapshots-json.yml", "inputs": {"mode": "head", "target_sha": "{sha}"}}}}, "unit-tests": {"label": "Unit Tests", "platforms": {"windows": {"wf": "unit-tests-windows-container.yml", "inputs": {"commit_sha": "{sha}"}}}}, "builds": {"label": "Builds", "platforms": {"windows": {"wf": "build-binaries-windows-container.yml", "inputs": {"commit_sha": "{sha}"}}, "linux": {"wf": "build-binaries-linux-container.yml", "inputs": {"commit_sha": "{sha}"}}}}};
-    var RT_TIMING = {"masscompile": {"windows": {"total": 934.0, "work": 20}, "linux": {"total": 93.0, "work": 20}}, "vi-analyzer": {"windows": {"total": 958.0, "work": null}, "linux": {"total": 161.0, "work": null}}, "vidiff": {"windows": {"total": 992.0, "work": null}, "linux": {"total": 97.0, "work": null}}, "snapshots2": {"windows": {"total": 958.0, "work": null}, "linux": {"total": 120.5, "work": null}}, "unit-tests": {"windows": {"total": 987.0, "work": null}}, "builds": {"windows": {"total": 946.0, "work": null}, "linux": {"total": null, "work": null}}};
+    var RT_TIMING = {"masscompile": {"windows": {"total": 934.0, "work": 20.0}, "linux": {"total": 93.0, "work": 20.0}}, "vi-analyzer": {"windows": {"total": 958.0, "work": null}, "linux": {"total": 161.0, "work": null}}, "vidiff": {"windows": {"total": 992.0, "work": null}, "linux": {"total": 97.0, "work": null}}, "snapshots2": {"windows": {"total": 958.0, "work": null}, "linux": {"total": 119.0, "work": null}}, "unit-tests": {"windows": {"total": 987.0, "work": null}}, "builds": {"windows": {"total": 946.0, "work": null}, "linux": {"total": null, "work": null}}};
     var REPO = "danielcoons/LabVIEW-CLI-testing";
     var BRANCH = "main";
     var TOK_KEY = "lvci_dispatch_token";
@@ -2014,7 +2014,7 @@
   </script>
   <main class="lvci-main">
   <h1>CI Dashboard — LabVIEW-CLI-testing</h1>
-  <div class="sub">Last updated: 2026-07-31 17:04 UTC &nbsp;|&nbsp; Live — refreshing every 60 s while CI runs</div>
+  <div class="sub">Last updated: 2026-07-31 17:06 UTC &nbsp;|&nbsp; Live — refreshing every 60 s while CI runs</div>
   <div class="nav">
     <a href="https://github.com/danielcoons/LabVIEW-CLI-testing">GitHub</a>
     <a href="https://github.com/danielcoons/LabVIEW-CLI-testing/actions">Actions</a>
@@ -2059,6 +2059,44 @@
       </tr>
     </thead>
     <tbody>
+    <tr data-project="false" data-deponly="false">
+      <td class="cidash-rev">
+        <div class="cidash-rev-wrap">
+          <span class="cidash-avatar" style="background:hsl(55,42%,45%)" title="Daniel Coons" aria-hidden="true">D</span>
+          <div class="cidash-rev-body">
+            <div class="cidash-rev-line1"><a href="https://danielcoons.github.io/LabVIEW-CLI-testing/vi-snapshots/index.html?sha=1181b087c5083fd8122d718ab4548ea72ca688db" class="cidash-rev-msg" title="Merge pull request #4 from danielcoons/labview-ci/reconfigure-30649731587">Merge pull request #4 from danielcoons/labview-ci/reconfigure-30649731587</a></div>
+            <div class="cidash-rev-meta"><a href="https://danielcoons.github.io/LabVIEW-CLI-testing/vi-snapshots/index.html?sha=1181b087c5083fd8122d718ab4548ea72ca688db" class="cidash-rev-sha" title="Browse this revision's VIs in the VI Browser">1181b08</a><span class="cidash-rev-dot">&middot;</span>Daniel Coons<span class="cidash-rev-dot">&middot;</span>2026-07-31</div>
+          </div>
+        </div>
+      </td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+    </tr>
+
+    <tr data-project="false" data-deponly="false">
+      <td class="cidash-rev">
+        <div class="cidash-rev-wrap">
+          <span class="cidash-avatar" style="background:hsl(150,42%,45%)" title="github-actions[bot]" aria-hidden="true">G</span>
+          <div class="cidash-rev-body">
+            <div class="cidash-rev-line1"><a href="https://danielcoons.github.io/LabVIEW-CLI-testing/vi-snapshots/index.html?sha=dde1ec326f2bc30d008cdb78624ddad05b899fb5" class="cidash-rev-msg" title="ci: reconfigure LabVIEW CI settings">ci: reconfigure LabVIEW CI settings</a></div>
+            <div class="cidash-rev-meta"><a href="https://danielcoons.github.io/LabVIEW-CLI-testing/vi-snapshots/index.html?sha=dde1ec326f2bc30d008cdb78624ddad05b899fb5" class="cidash-rev-sha" title="Browse this revision's VIs in the VI Browser">dde1ec3</a><span class="cidash-rev-dot">&middot;</span>github-actions[bot]<span class="cidash-rev-dot">&middot;</span>2026-07-31</div>
+          </div>
+        </div>
+      </td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+      <td style="text-align:center;color:var(--fg-muted);font-size:.75em">—</td>
+    </tr>
+
     <tr data-project="true" data-deponly="false">
       <td class="cidash-rev">
         <div class="cidash-rev-wrap">
