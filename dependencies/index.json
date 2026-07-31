@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "c710739490062448aa2e0edf8ef005ca0a3a5ced",
+  "sha": "10de5c7db0380873d45937aed5b407b37947da3d",
   "revisions": [
+    {
+      "sha": "10de5c7db0380873d45937aed5b407b37947da3d",
+      "short": "10de5c7",
+      "message": "fixed the call to sbom generation",
+      "author": "daniel-coons",
+      "date": "2026-07-31T02:11:00Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "c710739490062448aa2e0edf8ef005ca0a3a5ced",
       "short": "c710739",
