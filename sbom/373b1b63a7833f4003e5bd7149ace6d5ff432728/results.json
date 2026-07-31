@@ -1,0 +1,36 @@
+{
+ "meta": {
+  "sha": "373b1b63a7833f4003e5bd7149ace6d5ff432728",
+  "short": "373b1b6",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "turns out copy and paste on phone is bad idea",
+   "author": "daniel-coons",
+   "date": "2026-07-31T08:19:06-04:00"
+  },
+  "generated_utc": "2026-07-31 12:34 UTC",
+  "spdx_version": "SPDX-2.3",
+  "created": "2026-07-31T12:34:11Z"
+ },
+ "summary": {
+  "total_packages": 0
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [],
+ "tooling": {
+  "missing": []
+ }
+}
