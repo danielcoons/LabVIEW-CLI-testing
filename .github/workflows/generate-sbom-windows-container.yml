@@ -183,7 +183,7 @@ jobs:
             -v "${{ github.workspace }}:C:\workspace" `
             $Env:LABVIEW_CONTAINER_IMAGE `
             powershell -NonInteractive -ExecutionPolicy Bypass `
-              -File "C:\workspace\.github\labview\generate-sbom.ps1" `
+              -File "C:\workspace\.github\labview\run-sbom-generation.ps1" `
               -WorkspaceRoot "C:\workspace" `
               -ResultsDir    "C:\workspace\ci-out\sbom\results"
         continue-on-error: true

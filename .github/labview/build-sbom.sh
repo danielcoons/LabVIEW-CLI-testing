@@ -2,7 +2,7 @@
 # =============================================================================
 # generate-sbom.sh - Generates an SPDX SBOM in a Linux container
 # =============================================================================
-# Linux counterpart of generate-sbom.ps1. Scans the workspace for LabVIEW project
+# Linux counterpart of run-sbom-generation.ps1. Scans the workspace for LabVIEW project
 # dependencies (such as .vipc or .vip files), generates an SPDX 2.3 JSON document,
 # writes sbom.json into ci-out/sbom/results/, and outputs a fallback index.html.
 #
