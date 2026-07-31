@@ -2,7 +2,7 @@
 # Updated by the Reconfigure workflow.
 schemaVersion: 1
 installedVersion: 4.13.0
-configuredAt: 2026-07-30T19:55:34Z
+configuredAt: 2026-07-31T01:02:46Z
 source:
   repo: danielcoons/LabVIEW-CLI-testing
   ref: v4.13.0
