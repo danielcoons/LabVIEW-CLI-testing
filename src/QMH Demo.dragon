@@ -1,0 +1,10 @@
+[project]
+labview-version = 2026
+vipc = ""
+
+[nipm]
+
+[vipm]
+
+[vipm.dependencies]
+tsc_lib_tsc_pop_up = "4.0.0.8"

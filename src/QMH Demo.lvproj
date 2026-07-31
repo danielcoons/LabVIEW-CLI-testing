@@ -39,6 +39,9 @@
 			<Item Name="UI Data.ctl" Type="VI" URL="../controls/UI Data.ctl"/>
 		</Item>
 		<Item Name="Main.vi" Type="VI" URL="../Main.vi"/>
+		<Item Name="Package Dependencies" Type="IIO Ladder Diagram">
+			<Property Name="NI.SortType" Type="Int">0</Property>
+		</Item>
 		<Item Name="Dependencies" Type="Dependencies"/>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Main Application" Type="EXE">
