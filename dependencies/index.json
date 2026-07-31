@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "10de5c7db0380873d45937aed5b407b37947da3d",
+  "sha": "c5cee0ea4ad574b62b1af209f24df0ca6757af89",
   "revisions": [
+    {
+      "sha": "c5cee0ea4ad574b62b1af209f24df0ca6757af89",
+      "short": "c5cee0e",
+      "message": "Refactor SBOM generation script for clarity and robustness",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T02:38:47Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "10de5c7db0380873d45937aed5b407b37947da3d",
       "short": "10de5c7",
