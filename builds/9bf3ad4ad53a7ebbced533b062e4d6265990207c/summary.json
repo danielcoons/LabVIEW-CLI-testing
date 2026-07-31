@@ -1,0 +1,1 @@
+{"platform":"windows","status":"failed","total":1,"built":0,"skipped":0,"failed":1,"duration":37.8,"labview_version":"LabVIEW 2026","specs":[{"project":"src\\QMH Demo.lvproj","name":"Main Application","type":"EXE","target":"My Computer","status":"failed","outputs":[],"message":"ExecuteBuildSpec exited 2","duration":37.5}]}
