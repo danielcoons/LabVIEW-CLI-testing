@@ -1,8 +1,26 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "a205d724969c92acedfdda097cdf206ed83a53ba",
+  "sha": "69eaaae0b0e871ddcd1a560fa64fcecfde94b0ff",
   "revisions": [
+    {
+      "sha": "69eaaae0b0e871ddcd1a560fa64fcecfde94b0ff",
+      "short": "69eaaae",
+      "message": "Merge pull request #6 from danielcoons/labview-ci/reconfigure-30652599402",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T17:50:06Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "014569884201fa73e5990bc70b8e4e32f662580d",
+      "short": "0145698",
+      "message": "ci: reconfigure LabVIEW CI settings",
+      "author": "github-actions[bot]",
+      "date": "2026-07-31T17:48:21Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "a205d724969c92acedfdda097cdf206ed83a53ba",
       "short": "a205d72",
@@ -302,9 +320,15 @@
         "monitorOn": null
       }
     ],
-    "dragon": [],
+    "dragon": [
+      {
+        "path": "src/QMH Demo.dragon",
+        "monitor": true,
+        "monitorOn": null
+      }
+    ],
     "hasVipcList": true,
-    "hasDragonList": false
+    "hasDragonList": true
   },
   "vipc": [
     {
