@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "9bf3ad4ad53a7ebbced533b062e4d6265990207c",
+  "sha": "a06f762d966d52337ac81e0513f6f83bca63deea",
   "revisions": [
+    {
+      "sha": "a06f762d966d52337ac81e0513f6f83bca63deea",
+      "short": "a06f762",
+      "message": "adding lunit unit test for easy verification",
+      "author": "daniel-coons",
+      "date": "2026-07-31T16:55:27Z",
+      "project": true,
+      "dep_only": false
+    },
     {
       "sha": "9bf3ad4ad53a7ebbced533b062e4d6265990207c",
       "short": "9bf3ad4",
