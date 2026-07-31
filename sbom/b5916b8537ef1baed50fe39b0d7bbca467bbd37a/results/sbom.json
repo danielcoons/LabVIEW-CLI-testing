@@ -1,0 +1,14 @@
+﻿{
+    "name":  "LabVIEW-Container-Dependencies",
+    "SPDXID":  "SPDXRef-DOCUMENT",
+    "spdxVersion":  "SPDX-2.3",
+    "created":  "2026-07-31T14:06:52Z",
+    "dataLicense":  "CC0-1.0",
+    "packages":  [
+                     {
+                         "Name":  "ni-labview-2026-vilib",
+                         "Version":  "26.1.2.49158-0+f6",
+                         "Vendor":  "VIPM Package"
+                     }
+                 ]
+}

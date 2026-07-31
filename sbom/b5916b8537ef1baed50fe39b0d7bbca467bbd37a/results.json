@@ -1,0 +1,42 @@
+{
+ "meta": {
+  "sha": "b5916b8537ef1baed50fe39b0d7bbca467bbd37a",
+  "short": "b5916b8",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "Refactor VI Server configuration and LabVIEW launch; trying again via my",
+   "author": "Daniel Coons",
+   "date": "2026-07-31T09:50:19-04:00"
+  },
+  "generated_utc": "2026-07-31 14:07 UTC",
+  "spdx_version": "SPDX-2.3",
+  "created": "2026-07-31T14:06:52Z"
+ },
+ "summary": {
+  "total_packages": 1
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [
+  {
+   "name": "ni-labview-2026-vilib",
+   "version": "26.1.2.49158-0+f6",
+   "vendor": "VIPM Package"
+  }
+ ],
+ "tooling": {
+  "missing": []
+ }
+}
