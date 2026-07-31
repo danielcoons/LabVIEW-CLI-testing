@@ -2,7 +2,7 @@
 # Updated by the Reconfigure workflow.
 schemaVersion: 1
 installedVersion: 4.13.0
-configuredAt: 2026-07-31T17:09:37Z
+configuredAt: 2026-07-31T17:48:21Z
 source:
   repo: danielcoons/LabVIEW-CLI-testing
   ref: v4.13.0
@@ -15,6 +15,9 @@ config:
     use: latest
     vipc:
       - path: ".github/labview/vipm/ci-tooling.vipc"
+        monitor: true
+    dragon:
+      - path: "src/QMH Demo.dragon"
         monitor: true
   viAnalyzer:
     default: assets/via/via-config-tsc.viancfg
