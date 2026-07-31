@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "b5916b8537ef1baed50fe39b0d7bbca467bbd37a",
+  "sha": "9bf3ad4ad53a7ebbced533b062e4d6265990207c",
   "revisions": [
+    {
+      "sha": "9bf3ad4ad53a7ebbced533b062e4d6265990207c",
+      "short": "9bf3ad4",
+      "message": "updated main to add an a vip dependence and cleaned up the ui",
+      "author": "daniel-coons",
+      "date": "2026-07-31T16:45:41Z",
+      "project": true,
+      "dep_only": false
+    },
     {
       "sha": "b5916b8537ef1baed50fe39b0d7bbca467bbd37a",
       "short": "b5916b8",
