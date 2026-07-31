@@ -79,7 +79,7 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
     if ($VipmCli -and (Test-Path $VipmCli)) {
         Write-Host "Generating native VIPM SBOM via VIPM CLI..." -ForegroundColor Cyan
         
-        # 1. Locate main project file (.lvproj), explicitly ignoring tooling/CI folders
+        # 1. Locate main project file (.lvproj), ignoring CI/tooling folders
         $projFile = Get-ChildItem -Path $Workspace -Filter '*.lvproj' -Recurse -ErrorAction SilentlyContinue |
             Where-Object { $_.FullName -notmatch '[\\/](\.github|ci-out|build)[\\/]' } |
             Select-Object -First 1
@@ -88,31 +88,56 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
             $projPath = $projFile.FullName
             $outPath  = Join-Path $OutDir "sbom.json"
             
-            Write-Host "  Project : $projPath"
-            Write-Host "  Output  : $outPath"
+            # 2. Configure LabVIEW.ini BEFORE launching LabVIEW
+            $lvExe = Get-ChildItem "C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+            $lvProcess = $null
 
-            # 2. Ensure VI Server (Port 3363) is enabled in LabVIEW.ini if present
-            $lvIniPaths = Get-ChildItem "C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.ini" -ErrorAction SilentlyContinue
-            foreach ($ini in $lvIniPaths) {
-                try {
-                    $content = Get-Content $ini.FullName -Raw -ErrorAction SilentlyContinue
-                    if ($content -and $content -notmatch "server.tcp.enabled=True") {
-                        Write-Host "Enabling VI Server Port 3363 in $($ini.FullName)..."
-                        Add-Content -Path $ini.FullName -Value "`r`nserver.tcp.enabled=True`r`nserver.tcp.port=3363`r`nserver.tcp.access=`"+127.0.0.1;+localhost`""
+            if ($lvExe) {
+                $iniPath = Join-Path (Split-Path $lvExe.FullName) "LabVIEW.ini"
+                if (Test-Path $iniPath) {
+                    $iniContent = Get-Content $iniPath -Raw -ErrorAction SilentlyContinue
+                    if ($iniContent -notmatch "server.tcp.enabled=True") {
+                        Write-Host "Enabling VI Server (Port 3363) in $iniPath..."
+                        Add-Content -Path $iniPath -Value "`r`nserver.tcp.enabled=True`r`nserver.tcp.port=3363`r`nserver.tcp.access=`"+127.0.0.1;+localhost`""
                     }
-                } catch {
-                    Write-Warning "Could not update $($ini.FullName): $($_.Exception.Message)"
+                }
+
+                # 3. Launch Headless LabVIEW
+                Write-Host "Launching headless LabVIEW ($($lvExe.FullName))..." -ForegroundColor Cyan
+                $lvProcess = Start-Process -FilePath $lvExe.FullName -ArgumentList "-LabVIEWCLI" -PassThru -NoNewWindow
+                
+                # 4. Wait until Port 3363 is active (up to 30s)
+                Write-Host "Waiting for VI Server (Port 3363) to open..."
+                $portOpen = $false
+                for ($i = 0; $i -lt 15; $i++) {
+                    $client = New-Object System.Net.Sockets.TcpClient
+                    try {
+                        $client.Connect("127.0.0.1", 3363)
+                        if ($client.Connected) {
+                            $portOpen = $true
+                            $client.Close()
+                            break
+                        }
+                    } catch {
+                        Start-Sleep -Seconds 2
+                    }
+                }
+
+                if ($portOpen) {
+                    Write-Host "VI Server is active on port 3363!" -ForegroundColor Green
+                } else {
+                    Write-Warning "Timed out waiting for Port 3363 to open. Proceeding anyway..."
                 }
             }
 
             try {
-                # 3. Execute VIPM SBOM command
+                # 5. Execute VIPM SBOM command
+                Write-Host "Executing VIPM CLI..." -ForegroundColor Cyan
                 & $VipmCli sbom "$projPath" --format "cyclonedx" --schema-version "1.5" --output "$outPath"
 
                 if (Test-Path $outPath) {
                     Write-Host "VIPM SBOM generated successfully!" -ForegroundColor Green
                     $sbomRaw = Get-Content $outPath | ConvertFrom-Json
-                    
                     if ($sbomRaw.components) {
                         $sbomPackages = @($sbomRaw.components | ForEach-Object {
                             [pscustomobject]@{
@@ -122,14 +147,16 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
                             }
                         })
                     }
-                } else {
-                    Write-Warning "VIPM CLI completed but output file was not created at $outPath"
                 }
-            } catch {
-                Write-Warning "Failed to execute VIPM CLI sbom command: $($_.Exception.Message)"
+            } finally {
+                # 6. Clean up headless LabVIEW
+                if ($lvProcess -and -not $lvProcess.HasExited) {
+                    Write-Host "Stopping headless LabVIEW instance..." -ForegroundColor Yellow
+                    Stop-Process -Id $lvProcess.Id -Force -ErrorAction SilentlyContinue
+                }
             }
         } else {
-            Write-Warning "No valid user .lvproj file found in workspace root $Workspace (excluding .github)."
+            Write-Warning "No valid .lvproj file found in workspace."
         }
     }
 
