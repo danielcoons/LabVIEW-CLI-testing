@@ -1,8 +1,62 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "24fafd3314c9d4c718fed09617ccd8a0e999a3c4",
+  "sha": "ad45ade897cb28821f9625e1384c01a119c47ac1",
   "revisions": [
+    {
+      "sha": "ad45ade897cb28821f9625e1384c01a119c47ac1",
+      "short": "ad45ade",
+      "message": "updating what i think continues to make this local",
+      "author": "daniel-coons",
+      "date": "2026-07-31T00:56:05Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "9efe7b222f99d668214eebcc40a5672032a1a8ca",
+      "short": "9efe7b2",
+      "message": "trigger actions",
+      "author": "daniel-coons",
+      "date": "2026-07-30T22:03:30Z",
+      "project": true,
+      "dep_only": false
+    },
+    {
+      "sha": "e5ddc1015876f2beba4bcc6b2e2eea08a5006186",
+      "short": "e5ddc10",
+      "message": "maybe this works, maybe not",
+      "author": "daniel-coons",
+      "date": "2026-07-30T22:02:13Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "2086fbb846b9057a5a238ca29a66eb81bd386fa6",
+      "short": "2086fbb",
+      "message": "updated main ui a teensy bit to kick off stuff",
+      "author": "daniel-coons",
+      "date": "2026-07-30T21:10:53Z",
+      "project": true,
+      "dep_only": false
+    },
+    {
+      "sha": "205a356f75a99434c9a40271d202ddc5ab99979c",
+      "short": "205a356",
+      "message": "getting rid of the files i forgot to exclude before i set up the gitignore",
+      "author": "daniel-coons",
+      "date": "2026-07-30T21:05:18Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "e0af583f5ede8bd2b5069e308adff69a79bcf3d8",
+      "short": "e0af583",
+      "message": "workflow additions to include sbom",
+      "author": "daniel-coons",
+      "date": "2026-07-30T21:04:19Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "24fafd3314c9d4c718fed09617ccd8a0e999a3c4",
       "short": "24fafd3",
