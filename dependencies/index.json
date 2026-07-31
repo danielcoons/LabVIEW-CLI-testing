@@ -1,8 +1,26 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "ad45ade897cb28821f9625e1384c01a119c47ac1",
+  "sha": "f1915ba77f9f798fa2e40aeca76c6c49e1971243",
   "revisions": [
+    {
+      "sha": "f1915ba77f9f798fa2e40aeca76c6c49e1971243",
+      "short": "f1915ba",
+      "message": "Merge pull request #3 from danielcoons/labview-ci/reconfigure-30595265175",
+      "author": "Daniel Coons",
+      "date": "2026-07-31T01:20:40Z",
+      "project": false,
+      "dep_only": false
+    },
+    {
+      "sha": "35c5a802ced700979c9d4033f4a45d0eebcfd8f0",
+      "short": "35c5a80",
+      "message": "ci: reconfigure LabVIEW CI settings",
+      "author": "github-actions[bot]",
+      "date": "2026-07-31T01:02:47Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "ad45ade897cb28821f9625e1384c01a119c47ac1",
       "short": "ad45ade",
