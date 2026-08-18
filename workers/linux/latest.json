@@ -1,7 +1,7 @@
 {
-  "version": "linux-faa4596c3848",
+  "version": "linux-4ce478ba9bb6",
   "platform": "linux",
-  "manifest_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/workers/linux/linux-faa4596c3848/manifest.html",
-  "build_date": "2026-07-30T19:51:50Z",
-  "git_sha": "62a549e8096f170faf9b7d535e4cc6dca3983ea7"
+  "manifest_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/workers/linux/linux-4ce478ba9bb6/manifest.html",
+  "build_date": "2026-08-18T19:27:37Z",
+  "git_sha": "222cab72485e4ade96afb7c2a0135488458a4379"
 }
