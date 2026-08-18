@@ -469,7 +469,7 @@
     "column": "windows",
     "ready": true,
     "health": "",
-    "manifest_version": "win-3c2bd0afb358",
+    "manifest_version": "win-0ea14bbc82b0",
     "files": [
       {
         "source_file": "src/QMH Demo.dragon",
@@ -555,7 +555,7 @@
       "nipkg_ready": true,
       "nipkg_packages": [],
       "labview_version": "2026",
-      "version": "win-3c2bd0afb358"
+      "version": "win-0ea14bbc82b0"
     },
     {
       "key": "linux",
@@ -569,7 +569,7 @@
       "nipkg_ready": true,
       "nipkg_packages": [],
       "labview_version": "2026",
-      "version": "linux-faa4596c3848"
+      "version": "linux-4ce478ba9bb6"
     }
   ]
 }
