@@ -1,47 +1,37 @@
-name: Run Unit Tests — Windows Container
-run-name: Unit Tests Windows container - ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit_sha || github.event.pull_request.head.sha || github.sha }}
+name: Run Antidoc — Windows Container
+run-name: Antidoc Windows container - ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.commit_sha || github.event.pull_request.head.sha || github.sha }}
 
-# Runs the configured LabVIEW unit-test frameworks (Caraya / VI Tester / UTF)
-# headlessly inside the project's CI worker image, normalises their JUnit XML into
-# one friendly report (build-unittest-report.py), deploys it under
-# unit-tests/<sha>/, and posts the "CI / Unit Tests" commit status the dashboard
-# column reads. Mirrors run-vi-analyzer-windows-container.yml so the two activities
-# behave identically (per-action container selection, Run-now dispatch, framed
-# report). Manual runs come through workflow_dispatch (the dashboard's Run-now).
+# Generates project documentation with Antidoc (Wovalab) inside the custom CI
+# worker image, publishes it to the caller's Pages, and posts the "CI / Antidoc"
+# commit status so the dashboard's Antidoc column shows the result.
+#
+# Antidoc is baked into the worker image as a VIPM package (Configure ->
+# "Use Antidoc"); it runs through g-cli headlessly. Doc generation is heavier than
+# the per-VI checks and renders diagrams via a Kroki server at run time, so this
+# does NOT auto-run on every pull request: it runs on pushes to the default branch
+# and on demand (the dashboard's per-commit "Run" button, or workflow_dispatch).
 
 on:
-  # Auto-runs only on real LabVIEW source changes — never on the tooling files an
-  # install/deploy adds (e.g. .github/labview-ci.yml), so deploying the pipeline or
-  # changing the config never kicks off a unit-test run. Use the dashboard's "Run
-  # all history" prompt or workflow_dispatch to run on demand.
-  pull_request:
-    paths:
-      - '**.vi'
-      - '**.lvclass'
-      - '**.lvproj'
-      - '**.lvlib'
-      - '**.lvtest'
-      - '!.github/**'
   push:
     branches: [main]
     paths:
       - '**.vi'
-      - '**.lvclass'
+      - '**.ctl'
       - '**.lvproj'
       - '**.lvlib'
-      - '**.lvtest'
-      - '!.github/**'
+      - '**.lvclass'
   workflow_dispatch:
     inputs:
       commit_sha:
-        description: 'Commit SHA to test (leave blank for current HEAD)'
+        description: 'Commit SHA to document (leave blank for current HEAD)'
         required: false
         default: ''
 
 env:
-  # Resolved + lowercased at runtime (GHCR rejects upper-case names); declared
-  # empty so it is always a defined key. Override with vars.LABVIEW_IMAGE_NAME /
-  # LABVIEW_VERSION.
+  # Custom CI image (built by build-labview-image.yml). GHCR repository names MUST be
+  # lowercase, but github.event.repository.name preserves the repo's original case,
+  # which docker pull rejects — so the image ref is resolved + lowercased at runtime
+  # by "Resolve container image name". Declared empty here so the key always exists.
   LABVIEW_CONTAINER_IMAGE: ''
   PAGES_URL: ${{ vars.PAGES_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
 
@@ -63,7 +53,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  unit-tests:
+  antidoc:
     runs-on: windows-2022   # windows-latest = Server 2025, broken Docker daemon
 
     steps:
@@ -99,7 +89,7 @@ jobs:
             -H "Authorization: token $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.sha.outputs.sha }}" \
-            -d "{\"state\":\"pending\",\"target_url\":\"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",\"description\":\"Unit tests in progress\",\"context\":\"CI / Unit Tests\"}"
+            -d "{\"state\":\"pending\",\"target_url\":\"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\",\"description\":\"Antidoc in progress\",\"context\":\"CI / Antidoc\"}"
 
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -114,10 +104,11 @@ jobs:
           git fetch --no-tags origin "${{ github.event.repository.default_branch }}"
           git checkout FETCH_HEAD -- .github/labview .github/workflows .github/actions/publish-gh-pages
 
-      # Per-action container selection: config.container.actions.unit-tests wins,
-      # then config.container.use. With neither set, default to the shared custom
-      # worker image at :latest. "base" forces the bare NI image; "latest"/"<tag>" select
-      # that tag of the custom worker image.
+      # GHCR rejects upper-case repository names. config.container.actions.antidoc
+      # wins, then the project-wide config.container.use; with neither set Antidoc
+      # defaults to the shared custom worker image at :latest. "base" forces the bare
+      # NI image; "latest"/"<tag>" select that
+      # tag of the custom worker image.
       - name: Resolve container image name
         shell: bash
         env:
@@ -128,7 +119,7 @@ jobs:
           name="${IMAGE_OVERRIDE:-${GITHUB_REPOSITORY##*/}-labview}"
           name=$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')
           custom="ghcr.io/${owner}/${name}"
-          ACTION_ID="unit-tests"
+          ACTION_ID="antidoc"
           CFG=.github/labview-ci.yml
           sel=""
           if [ -f "$CFG" ]; then
@@ -175,9 +166,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # If this push changed the worker image inputs, wait for "Build LabVIEW CI
-      # Image" to finish so tests run on the freshly-built worker. Bounded /
-      # best-effort; does nothing when no worker-affecting file changed.
+      # If this push changed the worker image inputs (a .vipc, the Dockerfile, or
+      # the VIPM assets — e.g. enabling Antidoc), wait for "Build LabVIEW CI Image"
+      # to finish for this commit so docs are generated on the freshly-built worker
+      # that actually contains Antidoc. Bounded and best-effort.
       - name: Wait for worker image build
         shell: bash
         env:
@@ -191,69 +183,56 @@ jobs:
         run: docker pull $Env:LABVIEW_CONTAINER_IMAGE
         continue-on-error: true
 
-      - name: Read worker version
-        id: worker
+      - name: Generate documentation inside container
         if: steps.pull.outcome == 'success'
         shell: powershell
-        run: |
-          $img = $Env:LABVIEW_CONTAINER_IMAGE
-          $wv = ''
-          try {
-            $info = docker inspect $img 2>$null | ConvertFrom-Json
-            if ($info) { $wv = [string]$info[0].Config.Labels.'com.cotc.ci-worker.version' }
-          } catch {}
-          if (-not $wv -or $wv -eq '<no value>') { $wv = '' }
-          "version=$wv" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          Write-Host "Worker version: $wv"
-          exit 0
-
-      - name: Run unit tests inside container
-        if: steps.pull.outcome == 'success'
-        shell: powershell
-        id: run
+        id: antidoc
         run: |
           docker run --rm `
             -e "GITHUB_REPOSITORY=${{ github.repository }}" `
+            -e "GITHUB_SHA=${{ steps.sha.outputs.sha }}" `
             -v "${{ github.workspace }}:C:\workspace" `
             $Env:LABVIEW_CONTAINER_IMAGE `
             powershell -NonInteractive -ExecutionPolicy Bypass `
-              -File "C:\workspace\.github\labview\run-unit-tests.ps1" `
+              -File "C:\workspace\.github\labview\run-antidoc.ps1" `
               -WorkspaceRoot  "C:\workspace" `
-              -ResultsDir     "C:\workspace\ci-out\unit-tests\results" `
-              -LabVIEWVersion "${{ vars.LABVIEW_VERSION || '2026' }}" `
+              -ReportDir      "C:\workspace\ci-out\antidoc" `
               -LabVIEWPath    "C:\Program Files\National Instruments\LabVIEW ${{ vars.LABVIEW_VERSION || '2026' }}\LabVIEW.exe"
         continue-on-error: true
 
-      - name: Build friendly report (merge JUnit + join snapshots)
+      - name: Check report directory
         id: report
-        if: steps.pull.outcome == 'success'
         shell: bash
-        continue-on-error: true
         run: |
-          # Merge every per-tool JUnit XML into one navigable report whose failing
-          # tests deep-link the VI under test into the VI Browser. Always runs
-          # (even with zero results: it renders an explicit "no tests found" page).
-          OUT="${{ github.workspace }}/ci-out/unit-tests"
-          python .github/labview/build-unittest-report.py \
-            --results   "$OUT/results" \
-            --out       "$OUT" \
-            --workspace "${{ github.workspace }}" \
-            --sha       "${{ steps.sha.outputs.sha }}" \
+          if [ -f "${{ github.workspace }}/ci-out/antidoc/index.html" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build friendly Antidoc report
+        if: steps.report.outputs.exists == 'true'
+        shell: bash
+        continue-on-error: true   # a formatting hiccup must never block deploying the raw docs
+        run: |
+          REPORT_DIR="${{ github.workspace }}/ci-out/antidoc"
+          python .github/labview/build-antidoc-report.py \
+            --in        "$REPORT_DIR" \
+            --out       "$REPORT_DIR" \
             --platform  windows \
+            --sha       "${{ steps.sha.outputs.sha }}" \
             --repo      "${{ github.repository }}" \
             --pages-url "${{ env.PAGES_URL }}" \
-            --labview-version "${{ vars.LABVIEW_VERSION || '2026' }}" \
             --commit-msg "$(git log -1 --pretty=%s   ${{ steps.sha.outputs.sha }})" \
             --author     "$(git log -1 --pretty=%an  ${{ steps.sha.outputs.sha }})" \
             --date       "$(git log -1 --pretty=%cI  ${{ steps.sha.outputs.sha }})"
-          if [ -f "$OUT/index.html" ]; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; fi
 
       - name: Upload report artifact
         if: steps.report.outputs.exists == 'true'
         uses: actions/upload-artifact@v6
         with:
-          name: unit-tests-report-${{ steps.sha.outputs.sha }}
-          path: ${{ github.workspace }}/ci-out/unit-tests/
+          name: antidoc-report-${{ steps.sha.outputs.sha }}
+          path: ${{ github.workspace }}/ci-out/antidoc/
           if-no-files-found: warn
 
       - name: Enable Git long paths (Windows MAX_PATH workaround)
@@ -267,8 +246,8 @@ jobs:
         if: steps.report.outputs.exists == 'true'
         uses: ./.github/actions/publish-gh-pages
         with:
-          publish_dir: ${{ github.workspace }}/ci-out/unit-tests
-          destination_dir: unit-tests/${{ steps.sha.outputs.sha }}
+          publish_dir: ${{ github.workspace }}/ci-out/antidoc
+          destination_dir: antidoc/${{ steps.sha.outputs.sha }}
 
       - name: Post commit status
         if: always()
@@ -276,43 +255,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          OUT="${{ github.workspace }}/ci-out/unit-tests"
-          STATE="failure"; DESC="Unit tests did not run"
-          if [ "${{ steps.report.outputs.exists }}" = "true" ] && [ -f "$OUT/results.json" ]; then
-            REPORT_URL="${{ env.PAGES_URL }}/unit-tests/${{ steps.sha.outputs.sha }}/index.html"
-            # Derive pass/fail from the report's own summary (results.json) so the
-            # status matches exactly what the report shows (mirrors Mass Compile).
-            tests=$(jq -r '.summary.tests // 0'   "$OUT/results.json")
-            passed=$(jq -r '.summary.passed // 0' "$OUT/results.json")
-            failed=$(jq -r '((.summary.failed // 0) + (.summary.errored // 0))' "$OUT/results.json")
-            if [ "${tests:-0}" -eq 0 ]; then
-              STATE="success"; DESC="No unit tests found"
-            elif [ "${failed:-0}" -eq 0 ]; then
-              STATE="success"; DESC="${passed} passed"
-            else
-              STATE="failure"; DESC="${failed} failed, ${passed} passed"
-            fi
-          elif [ "${{ steps.report.outputs.exists }}" = "true" ]; then
-            REPORT_URL="${{ env.PAGES_URL }}/unit-tests/${{ steps.sha.outputs.sha }}/index.html"
+          if [ "${{ steps.report.outputs.exists }}" = "true" ]; then
+            URL="${{ env.PAGES_URL }}/antidoc/${{ steps.sha.outputs.sha }}/index.html"
           else
-            REPORT_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi
+          if [ "${{ steps.pull.outcome }}" = "success" ] && [ "${{ steps.antidoc.outcome }}" = "success" ]; then
+            STATE="success"
+          else
+            STATE="failure"
           fi
           curl -s -X POST \
             -H "Authorization: token $GH_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.sha.outputs.sha }}" \
-            -d "{\"state\":\"$STATE\",\"target_url\":\"$REPORT_URL\",\"description\":\"$DESC\",\"context\":\"CI / Unit Tests\"}"
-
-      - name: Post worker version status
-        if: always() && steps.pull.outcome == 'success' && steps.worker.outputs.version != ''
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          WV="${{ steps.worker.outputs.version }}"
-          URL="${{ env.PAGES_URL }}/workers/windows/${WV}/manifest.html"
-          curl -s -X POST \
-            -H "Authorization: token $GH_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            "https://api.github.com/repos/${{ github.repository }}/statuses/${{ steps.sha.outputs.sha }}" \
-            -d "{\"state\":\"success\",\"target_url\":\"$URL\",\"description\":\"$WV\",\"context\":\"CI / Worker (windows)\"}"
+            -d "{\"state\":\"$STATE\",\"target_url\":\"$URL\",\"description\":\"Antidoc $STATE\",\"context\":\"CI / Antidoc\"}"
