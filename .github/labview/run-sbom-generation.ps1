@@ -3,6 +3,8 @@
     Generates a Software Bill of Materials (SBOM) for LabVIEW projects using JKI's VIPM CLI.
     Emits an SPDX-compliant JSON file (sbom.json) and an HTML widget (sbom_widget.html)
     intended for dashboard integration.
+    Reference: https://docs.vipm.io/latest/sbom/getting-started/
+    Development by: Daniel Coons, TSC
 
 .PARAMETER WorkspaceRoot
     Absolute path to the checked-out project repository. Default: C:\workspace.
@@ -64,6 +66,57 @@ function Resolve-VIPMCLI {
     return $null
 }
 
+function Resolve-LabVIEWVersion {
+    # Detect installed LabVIEW version from the filesystem path.
+    # Paths are typically: C:\Program Files\National Instruments\LabVIEW 2026\LabVIEW.exe
+    $lvExe = Get-ChildItem "C:\Program Files*\National Instruments\LabVIEW*\LabVIEW.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $lvExe) { return $null }
+    
+    # Extract year (4 consecutive digits) from the path, e.g. "LabVIEW 2026" -> "2026"
+    if ($lvExe.FullName -match "LabVIEW[\s]*([0-9]{4})") {
+        return $Matches[1]
+    }
+    return $null
+}
+
+function Resolve-SbomVendor([object]$component) {
+    if (-not $component) { return 'N/A' }
+
+    $supplier = $component.supplier
+    if ($supplier -and $supplier.name) { return [string]$supplier.name }
+    if ($supplier -and ($supplier -is [string])) { return [string]$supplier }
+
+    foreach ($prop in @('publisher', 'vendor')) {
+        $value = $component.$prop
+        if ($value) { return [string]$value }
+    }
+
+    $purl = [string]$component.purl
+    if ($purl.StartsWith('pkg:nipkg/')) { return 'NIPM' }
+    if ($purl.StartsWith('pkg:vipm/')) { return 'VIPM' }
+
+    return 'N/A'
+}
+
+function Resolve-SbomVendor([object]$component) {
+    if (-not $component) { return 'N/A' }
+
+    $supplier = $component.supplier
+    if ($supplier -and $supplier.name) { return [string]$supplier.name }
+    if ($supplier -and ($supplier -is [string])) { return [string]$supplier }
+
+    foreach ($prop in @('publisher', 'vendor')) {
+        $value = $component.$prop
+        if ($value) { return [string]$value }
+    }
+
+    $purl = [string]$component.purl
+    if ($purl.StartsWith('pkg:nipkg/')) { return 'NIPM' }
+    if ($purl.StartsWith('pkg:vipm/')) { return 'VIPM' }
+
+    return 'N/A'
+}
+
 # -- Main Generation Logic ----------------------------------------------------
 function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
     Write-Host "=== JKI VIPM SBOM Generation ==="
@@ -75,6 +128,16 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
     Write-Host ""
 
     $sbomPackages = @()
+    $outPath = $null
+    
+    # Detect the installed LabVIEW version early, before VIPM needs it
+    $labviewVersion = Resolve-LabVIEWVersion
+    if (-not $labviewVersion) {
+        Write-Warning "Could not detect installed LabVIEW version. VIPM SBOM may fail if project targets a different year."
+        $labviewVersion = '2026'  # fallback
+    } else {
+        Write-Host "  Detected LabVIEW version: $labviewVersion" -ForegroundColor Gray
+    }
 
     if ($VipmCli -and (Test-Path $VipmCli)) {
         Write-Host "Generating native VIPM SBOM via VIPM CLI..." -ForegroundColor Cyan
@@ -138,20 +201,30 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
             try {
                 # 5. Execute VIPM SBOM command
                 Write-Host "Executing VIPM CLI..." -ForegroundColor Cyan
-                & $VipmCli sbom "$projPath" --format "cyclonedx" --schema-version "1.5" --output "$outPath"
+                Write-Host "  Targeting LabVIEW version: $labviewVersion (64-bit)" -ForegroundColor Gray
+                # --allow-missing-files: instrument drivers (e.g. <instrlib>/...) are not installed
+                # in the CI container; VIPM still generates the SBOM for all resolvable packages
+                # and emits warnings for the missing references rather than aborting (exit code 18).
+                & $VipmCli --labview-version $labviewVersion --labview-bitness 64 sbom "$projPath" --format "cyclonedx" --schema-version "1.5" --allow-missing-files --output "$outPath"
+                $vipmExitCode = $LASTEXITCODE
+                if ($vipmExitCode -ne 0) {
+                    throw "VIPM CLI SBOM generation failed with exit code $vipmExitCode."
+                }
 
-                if (Test-Path $outPath) {
-                    Write-Host "VIPM SBOM generated successfully!" -ForegroundColor Green
-                    $sbomRaw = Get-Content $outPath | ConvertFrom-Json
-                    if ($sbomRaw.components) {
-                        $sbomPackages = @($sbomRaw.components | ForEach-Object {
-                            [pscustomobject]@{
-                                Name    = $_.name
-                                Version = $_.version
-                                Vendor  = if ($_.publisher) { $_.publisher } else { "VIPM Package" }
-                            }
-                        })
-                    }
+                if (-not (Test-Path $outPath)) {
+                    throw "VIPM CLI reported success but did not create output file: $outPath"
+                }
+
+                Write-Host "VIPM SBOM generated successfully!" -ForegroundColor Green
+                $sbomRaw = Get-Content $outPath | ConvertFrom-Json
+                if ($sbomRaw.components) {
+                    $sbomPackages = @($sbomRaw.components | ForEach-Object {
+                        [pscustomobject]@{
+                            Name    = $_.name
+                            Version = $_.version
+                            Vendor  = Resolve-SbomVendor $_
+                        }
+                    })
                 }
             } finally {
                 # 6. Clean up background LabVIEW process
@@ -166,27 +239,17 @@ function Invoke-SbomGeneration([string]$Workspace, [string]$OutDir) {
     }
 
 
-    # Structure document in SPDX 2.3 standard JSON format
-    $sbomDoc = @{
-        spdxVersion = "SPDX-2.3"
-        dataLicense = "CC0-1.0"
-        SPDXID      = "SPDXRef-DOCUMENT"
-        name        = "LabVIEW-Container-Dependencies"
-        packages    = $sbomPackages
-        created     = (Get-Date).ToString("yyyy-MM-ddTHH:mm:ssZ")
+    # Preserve the native VIPM/CycloneDX sbom.json emitted by VIPM.
+    if ($outPath -and (Test-Path $outPath)) {
+        Write-Host "Preserved native SBOM JSON -> $outPath" -ForegroundColor Green
     }
-
-    # Save JSON artifact
-    $jsonPath = Join-Path $OutDir "sbom.json"
-    $sbomDoc | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $jsonPath -Encoding UTF8
-    Write-Host "Wrote SPDX JSON SBOM -> $jsonPath" -ForegroundColor Green
 
     # Generate HTML Widget for Dashboard Insertion
     $htmlWidget = @"
 <div class="card sbom-card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <h4>Software Bill of Materials (SBOM) - JKI VIPM Dependencies</h4>
-        <a href="sbom.json" download class="btn btn-sm btn-outline-primary">Download SPDX JSON</a>
+        <a href="sbom.json" download class="btn btn-sm btn-outline-primary">Download SBOM JSON</a>
     </div>
     <div class="card-body">
         <table class="table table-sm table-striped">
