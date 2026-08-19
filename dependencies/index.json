@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "006c4c3a9eab81aeefd89ad2afd37f9433b44082",
+  "sha": "c06bd5a45e219f09028196a041c1d3f091c2174c",
   "revisions": [
+    {
+      "sha": "c06bd5a45e219f09028196a041c1d3f091c2174c",
+      "short": "c06bd5a",
+      "message": "Add LabVIEW CI pipeline",
+      "author": "Daniel Coons",
+      "date": "2026-08-19T23:31:14Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "006c4c3a9eab81aeefd89ad2afd37f9433b44082",
       "short": "006c4c3",
