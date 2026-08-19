@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "222cab72485e4ade96afb7c2a0135488458a4379",
+  "sha": "006c4c3a9eab81aeefd89ad2afd37f9433b44082",
   "revisions": [
+    {
+      "sha": "006c4c3a9eab81aeefd89ad2afd37f9433b44082",
+      "short": "006c4c3",
+      "message": "ci: adopt LabVIEW CI tooling v4.15.5 (full update)",
+      "author": "github-actions[bot]",
+      "date": "2026-08-19T21:47:27Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "222cab72485e4ade96afb7c2a0135488458a4379",
       "short": "222cab7",
