@@ -1,7 +1,7 @@
 {
-  "version": "win-0ea14bbc82b0",
+  "version": "win-45030742b0ad",
   "platform": "windows",
-  "manifest_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/workers/windows/win-0ea14bbc82b0/manifest.html",
-  "build_date": "2026-08-19T23:31:27Z",
-  "git_sha": "c06bd5a45e219f09028196a041c1d3f091c2174c"
+  "manifest_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/workers/windows/win-45030742b0ad/manifest.html",
+  "build_date": "2026-08-24T17:51:19Z",
+  "git_sha": "07bf39c4571d9896be204e00b78f9d3613e98aa4"
 }
