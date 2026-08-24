@@ -1,8 +1,17 @@
 {
   "schema": 1,
   "repo": "danielcoons/LabVIEW-CLI-testing",
-  "sha": "07bf39c4571d9896be204e00b78f9d3613e98aa4",
+  "sha": "c811597d79ac78f20e716de712a256c5adee0ed9",
   "revisions": [
+    {
+      "sha": "c811597d79ac78f20e716de712a256c5adee0ed9",
+      "short": "c811597",
+      "message": "Add LabVIEW CI pipeline",
+      "author": "Daniel Coons",
+      "date": "2026-08-24T17:57:29Z",
+      "project": false,
+      "dep_only": false
+    },
     {
       "sha": "07bf39c4571d9896be204e00b78f9d3613e98aa4",
       "short": "07bf39c",
@@ -505,7 +514,7 @@
     "column": "windows",
     "ready": true,
     "health": "",
-    "manifest_version": "win-0ea14bbc82b0",
+    "manifest_version": "win-45030742b0ad",
     "files": [
       {
         "source_file": "src/QMH Demo.dragon",
@@ -591,7 +600,7 @@
       "nipkg_ready": true,
       "nipkg_packages": [],
       "labview_version": "2026",
-      "version": "win-0ea14bbc82b0"
+      "version": "win-45030742b0ad"
     },
     {
       "key": "linux",
