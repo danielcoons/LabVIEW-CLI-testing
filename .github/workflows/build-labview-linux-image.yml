@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 name: Build LabVIEW CI Image - Linux
 run-name: ${{ github.event_name == 'push' && 'Build Linux worker image (monitored dependency change)' || 'Build Linux worker image (apply dependencies)' }}
 

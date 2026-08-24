@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 name: Reconfigure LabVIEW CI
 run-name: Reconfigure LabVIEW CI - ${{ github.event_name == 'workflow_dispatch' && 'manual run' || github.sha }}
 

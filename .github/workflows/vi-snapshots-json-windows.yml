@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 name: VI Browser 2.0 render (Windows container)
 run-name: VI Browser 2.0 Windows ${{ github.event.inputs.target_sha || github.event.workflow_run.head_sha || github.sha }}${{ github.event.inputs.vi && ' single VI' || '' }}${{ github.event.inputs.force == 'true' && ' force' || '' }}
 

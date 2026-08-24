@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 name: VIDiff Report — Windows Container
 run-name: VIDiff Windows container - ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.head_sha || github.event.pull_request.head.sha || github.sha }}
 

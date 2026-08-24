@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 # VI Snapshots JSON (in-place VI Browser 2.0)
 #
 # It pulls THIS repository's OWN toimages render image - built from the vendored

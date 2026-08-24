@@ -1,3 +1,4 @@
+# LabVIEW CI tooling v4.17.2 - this version stamp changes on every tooling update so the update push touches this file and GitHub (re)registers the workflow.
 name: VI Snapshots and VI Browser
 run-name: VI Snapshots and Browser - ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'backfill' && 'backfill' || github.sha }}
 
