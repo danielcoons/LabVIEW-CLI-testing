@@ -1,0 +1,42 @@
+{
+ "meta": {
+  "sha": "c811597d79ac78f20e716de712a256c5adee0ed9",
+  "short": "c811597",
+  "platform": "windows",
+  "repo": "danielcoons/LabVIEW-CLI-testing",
+  "pages_url": "https://danielcoons.github.io/LabVIEW-CLI-testing",
+  "dash_url": "https://danielcoons.github.io/LabVIEW-CLI-testing/",
+  "labview_version": "2026",
+  "commit": {
+   "message": "Add LabVIEW CI pipeline",
+   "author": "Daniel Coons",
+   "date": "2026-08-24T13:57:29-04:00"
+  },
+  "generated_utc": "2026-08-24 19:42 UTC",
+  "spdx_version": "CycloneDX 1.5",
+  "created": ""
+ },
+ "summary": {
+  "total_packages": 1
+ },
+ "platforms": [
+  {
+   "id": "windows",
+   "url": null
+  },
+  {
+   "id": "linux",
+   "url": "linux/results.json"
+  }
+ ],
+ "packages": [
+  {
+   "name": "ni-labview-2026-vilib",
+   "version": "26.3.0.49792-0+f640",
+   "vendor": "National Instruments"
+  }
+ ],
+ "tooling": {
+  "missing": []
+ }
+}
