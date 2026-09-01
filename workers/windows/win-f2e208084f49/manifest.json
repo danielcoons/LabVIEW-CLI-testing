@@ -10,9 +10,9 @@
   "worker_layer": "repo-vipc-layer",
   "copied_from_base": false,
   "image_ref": "ghcr.io/danielcoons/labview-cli-testing-labview:win-f2e208084f49",
-  "build_date": "2026-08-24T19:03:36Z",
+  "build_date": "2026-09-01T10:24:55Z",
   "git_sha": "c811597d79ac78f20e716de712a256c5adee0ed9",
-  "run_url": "https://github.com/danielcoons/LabVIEW-CLI-testing/actions/runs/32759985306",
+  "run_url": "https://github.com/danielcoons/LabVIEW-CLI-testing/actions/runs/33491523320",
   "vipc": [
     {
       "file": "antidoc.vipc",
