@@ -521,9 +521,9 @@
   "dragon": {
     "available": true,
     "column": "windows",
-    "ready": false,
+    "ready": true,
     "health": "",
-    "manifest_version": "",
+    "manifest_version": "win-f2e208084f49",
     "files": [
       {
         "source_file": "src/QMH Demo.dragon",
